@@ -1,13 +1,18 @@
 import './bootstrap';
 import { createApp } from 'vue';
-
-/**
- * Next, we will create a fresh Vue application instance. You may then begin
- * registering components with the application instance so they are ready
- * to use in your application's views. An example is included for you.
- */
-
+import { createPinia } from 'pinia';
+import { useAuthStore } from './store/useAuthStore';
+import router from './router/router';
 import App from './components/App.vue';
+
+const pinia = createPinia();
+
 const app = createApp(App);
 
-app.mount('#app');
+app.use(pinia)
+
+const {attempt} = useAuthStore();
+attempt().then(()=>{
+    app.use(router)
+    app.mount('#app');
+})
