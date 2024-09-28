@@ -11,9 +11,6 @@
                         <li class="nav-item">
                             <router-link :to="{name: 'home'}" class="nav-link">Home</router-link>
                         </li>
-                        <li class="nav-item">
-                            <router-link :to="{name: 'dashboard'}" class="nav-link">Dashboard</router-link>
-                        </li>
                     </ul>
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <template v-if="authenticated">
@@ -48,7 +45,6 @@ const handleLogout = ()=>{
     logout().then(()=>{
         router.push({ name: 'home' });
     }).catch((e)=>{
-        router.push({ name: 'home' });
     });
 }
 </script>

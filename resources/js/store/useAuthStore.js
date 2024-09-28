@@ -46,7 +46,6 @@ export const useAuthStore = defineStore('auth', {
                 return res;
             } 
             catch (error) {
-                this.setUser(null);
             }
         }
     },

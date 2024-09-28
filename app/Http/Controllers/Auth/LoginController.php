@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     public function index(){
-        return User::all();
+        $auth_id = Auth::id();
+        return User::where('id', '!=', $auth_id)->get();
     }
 
     public function login(Request $request)
