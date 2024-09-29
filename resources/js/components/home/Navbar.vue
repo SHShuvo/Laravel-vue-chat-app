@@ -15,6 +15,9 @@
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <template v-if="authenticated">
                             <li class="nav-item">
+                                <a href="#" class="nav-link">{{ user.name }}</a>
+                            </li>
+                            <li class="nav-item">
                                 <router-link :to="{name: 'dashboard'}" class="nav-link">Dashboard</router-link>
                             </li>
                             <li class="nav-item">
@@ -39,7 +42,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import router from '../../router/router';
 const {logout} = useAuthStore();
 
-const {authenticated} = storeToRefs(useAuthStore());
+const {authenticated, getUser:user} = storeToRefs(useAuthStore());
 
 const handleLogout = ()=>{
     logout().then(()=>{

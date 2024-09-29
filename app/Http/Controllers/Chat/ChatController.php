@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Chat;
 
+use App\Events\MessageSent;
 use App\Http\Controllers\Controller;
 use App\Models\Chat\ChatMessage;
 use Illuminate\Http\Request;
@@ -31,6 +32,8 @@ class ChatController extends Controller
             'recciver_id'=>$request->recciver_id,
             'message'=>$request->message
         ]);
+
+        broadcast(new MessageSent($msg));
 
         return response(['message'=>$msg], 201);
     }

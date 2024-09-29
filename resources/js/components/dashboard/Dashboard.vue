@@ -49,7 +49,7 @@
     import { useAuthStore } from '../../store/useAuthStore';
     import { storeToRefs } from 'pinia';
 
-    const {user} = storeToRefs(useAuthStore()); 
+    const {getUser:user} = storeToRefs(useAuthStore()); 
 
     const friends = ref([]);
     const messages = ref([]);
@@ -57,6 +57,8 @@
     const current_msg = ref('');
     const messagesContainer = ref(null);
     const show_chat_box = ref(false);
+
+    const audio = new Audio('/audio/chat.mp3');
 
     watch(messages, async ()=>{
         await nextTick();
@@ -69,6 +71,7 @@
     }, {deep:true});
 
     const sendMessage = async ()=>{
+        if (current_msg.value.trim() === '')return;
         try {
             const res = await axios.post('/send-message', {
                 sender_id:user.value.id,
@@ -78,6 +81,7 @@
 
             if(res.status === 201){
                 messages.value.push(res.data.message);
+                current_msg.value = '';
             }
         } 
         catch (error) {
@@ -96,8 +100,29 @@
         await (show_chat_box.value = true);
         messages.value = res.data;
     }
+    const checkChatBox = (message)=>{        
+        if(!show_chat_box.value || (current_chat.value.id !== message.sender_id)){
+            const friend = friends.value.find((el)=> el.id === message.sender_id);
+            loadChat(friend);
+        }
+    }
+
+    const chatNotification = ()=>{
+        if (!audio) {
+            audio = new Audio('/audio/song.mp3'); // Create the audio object only on user interaction
+        }
+        audio.play()
+        .catch(error => {});
+    }
 
     onMounted(()=>{
         loadUsers();
+        
+        Echo.private(`chat.${user.value.id}`)
+        .listen('MessageSent', (response)=>{
+            messages.value.push(response.message);
+            checkChatBox(response.message);
+            chatNotification();
+        })
     });
 </script>
