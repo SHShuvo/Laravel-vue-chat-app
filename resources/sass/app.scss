@@ -25,18 +25,18 @@ body{
 }
 
 .chat-bar {
-    position: fixed;
-    right: 0;
-    top: 58px; /* Adjust depending on your navbar */
-    bottom: 0;
-    width: 330px;
-    border-left: 1px solid #e1e1e1;
-    background-color: #f8f9fa;
-    z-index: 1050;
-    overflow-y: auto;
-    background-color: #f8f9fa;
-    z-index: 1050;
-    overflow-y: auto;
+  position: fixed;
+  right: 0;
+  top: 58px; /* Adjust depending on your navbar */
+  bottom: 0;
+  width: 330px;
+  border-left: 1px solid #e1e1e1;
+  background-color: #f8f9fa;
+  z-index: 1050;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  z-index: 1050;
+  overflow-y: auto;
 }
 
 .chat-contact {
@@ -145,8 +145,11 @@ body{
     padding: 10px;
     background-color: #fff;
     border-top: 1px solid #ddd;
-    display: flex;
-    align-items: center;
+}
+
+.chat-box-footer .message-send{
+  display: flex;
+  align-items: center;
 }
 
 .chat-box-footer input[type="text"] {
@@ -167,4 +170,9 @@ body{
 
 .chat-box-footer button:hover {
     background-color: #0bbac1;
+}
+
+.chat-box-footer .chat-is-typing{
+  padding: 0px 15px 10px 15px; 
+  color:#6c757d;
 }

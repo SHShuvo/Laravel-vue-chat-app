@@ -36,8 +36,11 @@
                 </div>
                 
                 <div class="chat-box-footer">
-                    <input @keydown.enter="sendMessage" v-model="current_msg" type="text" placeholder="Type a message..." />
-                    <button @click.prevent="sendMessage">Send</button>
+                    <div class="message-send">
+                        <input @keyup.enter="sendMessage" @keydown="sendTypingEvent" v-model="current_msg" type="text" placeholder="Type a message..." />
+                        <button @click.prevent="sendMessage">Send</button>
+                    </div>
+                    <small class="chat-is-typing" v-if="is_friend_typing">typing...</small>
                 </div>
             </div>
         </div>
@@ -57,6 +60,8 @@
     const current_msg = ref('');
     const messagesContainer = ref(null);
     const show_chat_box = ref(false);
+    const is_friend_typing = ref(false);
+    const friend_typing_timer = ref(null);
 
     const audio = new Audio('/audio/chat.mp3');
 
@@ -115,6 +120,13 @@
         .catch(error => {});
     }
 
+    const sendTypingEvent = ()=>{
+        Echo.private(`chat.${current_chat.value.id}`)
+        .whisper("typing", {
+            user_id:user.value.id
+        });   
+    }
+
     onMounted(()=>{
         loadUsers();
         
@@ -123,6 +135,16 @@
             messages.value.push(response.message);
             checkChatBox(response.message);
             chatNotification();
+        })
+        .listenForWhisper('typing', (response)=>{
+            is_friend_typing.value = response.user_id === current_chat.value.id;
+
+            if(friend_typing_timer.value){
+                clearTimeout(friend_typing_timer.value);
+            }
+            friend_typing_timer.value = setTimeout(()=>{
+                is_friend_typing.value = false;
+            }, 1000);
         })
     });
 </script>
