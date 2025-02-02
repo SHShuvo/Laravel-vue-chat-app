@@ -16,7 +16,7 @@
                 </div>
                 <div class="chat-contact-list">
                     <div @click.prevent="loadChat(fr)" class="chat-contact" v-for="(fr, index) in friends" :key="'fr'+index">
-                        <img src="https://via.placeholder.com/40" alt="Profile">
+                        <img src="/img/dp.png" alt="Profile">
                         <span class="chat-contact-name">{{ fr.name }}</span>
                     </div>
                 </div>
